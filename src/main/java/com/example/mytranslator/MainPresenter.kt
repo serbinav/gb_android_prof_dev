@@ -18,10 +18,6 @@ class MainPresenter<V : MainContract.View> : MainContract.Presenter<V> {
     }
 
     override fun getData(word: String) {
-        model.getData().first()
-
-        currentView?.showError(
-            model.getData().first().original + "/" + model.getData().first().translate
-        )
+        currentView?.showUsers(model.getData())
     }
 }

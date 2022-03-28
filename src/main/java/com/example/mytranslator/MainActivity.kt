@@ -3,6 +3,7 @@ package com.example.mytranslator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mytranslator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), MainContract.View {
@@ -10,6 +11,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var presenter: MainContract.Presenter<MainContract.View>
+
+    private var adapter: MainAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +44,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun showUsers(users: List<WordTranslate>) {
-        TODO("Not yet implemented")
+        if (adapter == null) {
+            binding.recycler.layoutManager =
+                LinearLayoutManager(applicationContext)
+            binding.recycler.adapter =
+                MainAdapter(users)
+        } else {
+            adapter!!.setData(users)
+        }
     }
 }
