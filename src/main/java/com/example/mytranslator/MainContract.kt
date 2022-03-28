@@ -1,5 +1,7 @@
 package com.example.mytranslator
 
+import com.example.mytranslator.model.WordTranslate
+
 interface MainContract {
 
     interface View {

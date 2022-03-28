@@ -1,4 +1,4 @@
-package com.example.mytranslator
+package com.example.mytranslator.model
 
 class MainModel {
     private var data: List<WordTranslate> = arrayListOf(

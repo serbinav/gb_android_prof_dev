@@ -1,4 +1,7 @@
-package com.example.mytranslator
+package com.example.mytranslator.presenter
+
+import com.example.mytranslator.MainContract
+import com.example.mytranslator.model.MainModel
 
 class MainPresenter<V : MainContract.View> : MainContract.Presenter<V> {
 
