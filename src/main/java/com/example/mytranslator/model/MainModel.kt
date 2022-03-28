@@ -1,13 +1,15 @@
 package com.example.mytranslator.model
 
-class MainModel {
+import io.reactivex.rxjava3.core.Single
+
+class LocalModel : MainRepository<WordTranslate>{
     private var data: List<WordTranslate> = arrayListOf(
         WordTranslate("school", "школа"),
         WordTranslate("schooling", "образование"),
         WordTranslate("schoolhouse", "здание школы")
     )
 
-    fun getData(): List<WordTranslate> {
-        return data;
+    override fun getData(): Single<List<WordTranslate>> {
+        return Single.just(data)
     }
 }

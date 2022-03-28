@@ -1,12 +1,12 @@
 package com.example.mytranslator.presenter
 
 import com.example.mytranslator.MainContract
-import com.example.mytranslator.model.MainModel
+import com.example.mytranslator.model.LocalModel
 
 class MainPresenter<V : MainContract.View> : MainContract.Presenter<V> {
 
     private var currentView: V? = null
-    private val model = MainModel()
+    private val model = LocalModel()
 
     override fun attachView(view: V) {
         if (view != currentView) {
@@ -21,6 +21,6 @@ class MainPresenter<V : MainContract.View> : MainContract.Presenter<V> {
     }
 
     override fun getData(word: String) {
-        currentView?.showUsers(model.getData())
+        currentView?.showUsers(model.getData().blockingGet())
     }
 }
