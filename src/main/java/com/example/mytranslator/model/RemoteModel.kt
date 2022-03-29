@@ -6,9 +6,9 @@ import io.reactivex.rxjava3.core.Single
 
 class RemoteModel : MainRepository<Data> {
 
-    private val gitHubApi = ApiFactory.create()
+    private val skyEngApi = ApiFactory.create()
 
     override fun getData(word: String): Single<List<Data>> {
-        return gitHubApi.search(word)
+        return skyEngApi.search(word)
     }
 }
