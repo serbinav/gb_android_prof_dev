@@ -4,6 +4,6 @@ import io.reactivex.rxjava3.core.Single
 
 interface MainRepository<T> {
 
-    fun getData(): Single<List<T>>
+    fun getData(word: String): Single<List<T>>
 
 }

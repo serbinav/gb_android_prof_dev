@@ -9,7 +9,7 @@ class LocalModel : MainRepository<WordTranslate>{
         WordTranslate("schoolhouse", "здание школы")
     )
 
-    override fun getData(): Single<List<WordTranslate>> {
+    override fun getData(word: String): Single<List<WordTranslate>> {
         return Single.just(data)
     }
 }
