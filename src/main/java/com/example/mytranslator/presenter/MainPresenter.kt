@@ -31,8 +31,8 @@ class MainPresenter<V : MainContract.View> : MainContract.Presenter<V> {
                 currentView?.showUsers(
                     it.map { data ->
                         WordTranslate(
-                            data.text ?: "",
-                            data.meanings?.get(0)?.translation?.translation ?: ""
+                            data.text.orEmpty(),
+                            data.meanings?.get(0)?.translation?.translation.orEmpty()
                         )
                     }
                         .toList())
