@@ -9,42 +9,44 @@ import com.example.mytranslator.R
 import com.example.mytranslator.databinding.ActivityMainBinding
 import com.example.mytranslator.view_model.AppState
 import com.example.mytranslator.view_model.MainViewModel
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private val model: MainViewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(MainViewModel::class.java)
-    }
-    private val observer = Observer<AppState> { renderData(it) }
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private var adapter: MainAdapter? = null
+    lateinit var model: MainViewModel
+    private lateinit var binding: ActivityMainBinding
+    private val adapter: MainAdapter by lazy { MainAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        model = viewModelFactory.create(MainViewModel::class.java)
+        model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
+
         binding.searchBtn.setOnClickListener {
-            model.getData(binding.searchText.text.toString()).observe(this@MainActivity, observer)
+            model.getData(binding.searchText.text.toString())
         }
+
+        binding.recycler.layoutManager = LinearLayoutManager(applicationContext)
+        binding.recycler.adapter = adapter
     }
 
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
                 val data = appState.data
-                if (data == null || data.isEmpty()) {
+                if (data.isNullOrEmpty()) {
                     showErrorScreen(getString(R.string.empty_server_response))
                 } else {
-                    if (adapter == null) {
-                        binding.recycler.layoutManager =
-                            LinearLayoutManager(applicationContext)
-                        binding.recycler.adapter =
-                            MainAdapter(data)
-                    } else {
-                        adapter!!.setData(data)
-                    }
+                    adapter.setData(data)
                 }
             }
             is AppState.Loading -> {
@@ -59,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private fun showErrorScreen(error: String?) {
         binding.errorText.text = error ?: getString(R.string.undefined_error)
         binding.reloadBtn.setOnClickListener {
-            model.getData("test").observe(this, observer)
+            model.getData("test")
         }
     }
 }

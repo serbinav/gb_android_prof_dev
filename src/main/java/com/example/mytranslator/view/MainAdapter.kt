@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mytranslator.databinding.ActivityMainRecyclerviewItemBinding
 import com.example.mytranslator.retrofit.Data
 
-class MainAdapter(private var data: List<Data>) :
+class MainAdapter :
     RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
+
+    private var data: List<Data> = arrayListOf()
 
     fun setData(data: List<Data>) {
         this.data = data
