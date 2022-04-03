@@ -7,7 +7,7 @@ class RemoteModel : DataSource<List<ApiData>> {
 
     private val skyEngApi = ApiFactory.create()
 
-    override fun getData(word: String): List<ApiData> {
-        return skyEngApi.search(word)
+    override suspend fun getData(word: String): List<ApiData> {
+        return skyEngApi.search(word).await()
     }
 }
