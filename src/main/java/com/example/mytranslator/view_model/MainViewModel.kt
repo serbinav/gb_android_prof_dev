@@ -1,40 +1,27 @@
 package com.example.mytranslator.view_model
 
 import androidx.lifecycle.LiveData
-import com.example.mytranslator.model.RemoteModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.observers.DisposableSingleObserver
-import io.reactivex.rxjava3.schedulers.Schedulers
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.mytranslator.model.ModelProvider
+import com.example.mytranslator.parseSearchResults
 
 class MainViewModel(
-    private val repository: RemoteModel = RemoteModel()
-) : BaseViewModel<AppState>() {
+    private val provider: ModelProvider
+) : ViewModel() {
 
-    private var appState: AppState? = null
+    private val liveDataForViewToObserve: MutableLiveData<AppState> = MutableLiveData()
 
-    override fun getData(word: String): LiveData<AppState> {
-        compositeDisposable.add(
-            repository.getData(word)
-                .map { AppState.Success(it) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { liveDataForViewToObserve.value = AppState.Loading(null) }
-                .subscribeWith(getObserver())
-        )
-        return super.getData(word)
+    fun subscribe(): LiveData<AppState> {
+        return liveDataForViewToObserve
     }
 
-    private fun getObserver(): DisposableSingleObserver<AppState> {
-        return object : DisposableSingleObserver<AppState>() {
+    fun getData(word: String) {
+        liveDataForViewToObserve.value = AppState.Loading(null)
+        liveDataForViewToObserve.postValue(parseSearchResults(provider.getData(word)))
+    }
 
-            override fun onError(e: Throwable) {
-                liveDataForViewToObserve.value = AppState.Error(e)
-            }
-
-            override fun onSuccess(state: AppState) {
-                appState = state
-                liveDataForViewToObserve.value = state
-            }
-        }
+    override fun onCleared() {
+        liveDataForViewToObserve.value = AppState.Success(null)
     }
 }

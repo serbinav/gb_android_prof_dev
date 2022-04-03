@@ -4,12 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mytranslator.databinding.ActivityMainRecyclerviewItemBinding
-import com.example.mytranslator.retrofit.Data
+import com.example.mytranslator.retrofit.ApiData
 
-class MainAdapter(private var data: List<Data>) :
+class MainAdapter:
     RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
-    fun setData(data: List<Data>) {
+    private var data: List<ApiData> = arrayListOf()
+
+    fun setData(data: List<ApiData>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -38,7 +40,7 @@ class MainAdapter(private var data: List<Data>) :
     inner class MainViewHolder(private val binding: ActivityMainRecyclerviewItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: Data) {
+        fun bind(data: ApiData) {
             with(binding) {
                 if (layoutPosition != RecyclerView.NO_POSITION) {
                     wordOriginal.text = data.text.orEmpty()
