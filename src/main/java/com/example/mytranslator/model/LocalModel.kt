@@ -11,7 +11,7 @@ class LocalModel : DataSource<List<ApiData>> {
         ApiData(text = "schoolhouse", arrayListOf(Meanings(Translation("здание школы"))))
     )
 
-    override fun getData(word: String): List<ApiData> {
+    override suspend fun getData(word: String): List<ApiData> {
         return data
     }
 }

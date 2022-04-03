@@ -2,6 +2,6 @@ package com.example.mytranslator.model
 
 interface Repository<T> {
 
-    fun getData(word: String): T
+    suspend fun getData(word: String): T
 
 }

@@ -7,7 +7,7 @@ class ModelProvider(
     private val repositoryRemote: Repository<List<ApiData>>,
 ) : Provider<AppState> {
 
-    override fun getData(word: String): AppState {
+    override suspend fun getData(word: String): AppState {
         return AppState.Success(repositoryRemote.getData(word))
     }
 }

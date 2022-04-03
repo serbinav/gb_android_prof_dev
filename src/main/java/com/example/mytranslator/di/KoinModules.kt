@@ -13,6 +13,6 @@ val application = module {
 }
 
 val mainScreen = module {
-    factory { ModelProvider(get(named(Constants.NAME_LOCAL))) }
+    factory { ModelProvider(get(named(Constants.NAME_REMOTE))) }
     factory { MainViewModel(get()) }
 }
