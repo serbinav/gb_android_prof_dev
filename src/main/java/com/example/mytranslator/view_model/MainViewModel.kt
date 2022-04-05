@@ -13,12 +13,14 @@ class MainViewModel(
 
     private val liveDataForViewToObserve: MutableLiveData<AppState> = MutableLiveData()
 
-    private val viewModelCoroutineScope = CoroutineScope(
+    private val coroutineScope = CoroutineScope(
         Dispatchers.IO
                 + SupervisorJob()
                 + CoroutineExceptionHandler { _, throwable ->
             handleError(throwable)
         })
+
+    private var coroutineJob: Job? = null
 
     private fun handleError(error: Throwable) {
         liveDataForViewToObserve.postValue(AppState.Error(error))
@@ -26,8 +28,8 @@ class MainViewModel(
 
     fun getData(word: String) {
         liveDataForViewToObserve.value = AppState.Loading(null)
-        cancelJob()
-        viewModelCoroutineScope.launch {
+        coroutineJob?.cancel()
+        coroutineJob = coroutineScope.launch {
             startProvider(word)
         }
     }
@@ -36,14 +38,10 @@ class MainViewModel(
         liveDataForViewToObserve.postValue(parseSearchResults(provider.getData(word)))
     }
 
-    private fun cancelJob() {
-        viewModelCoroutineScope.coroutineContext.cancelChildren()
-    }
-
     override fun onCleared() {
         liveDataForViewToObserve.value = AppState.Success(null)
         super.onCleared()
-        cancelJob()
+        coroutineScope.cancel()
     }
 
     fun subscribe(): LiveData<AppState> {
