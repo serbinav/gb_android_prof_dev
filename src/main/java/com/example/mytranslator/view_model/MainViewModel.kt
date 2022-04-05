@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mytranslator.model.ModelProvider
 import com.example.mytranslator.parseSearchResults
+import javax.inject.Inject
 
-class MainViewModel(
-    private val provider: ModelProvider
+class MainViewModel
+    @Inject constructor(private val provider: ModelProvider
 ) : ViewModel() {
 
     private val liveDataForViewToObserve: MutableLiveData<AppState> = MutableLiveData()
