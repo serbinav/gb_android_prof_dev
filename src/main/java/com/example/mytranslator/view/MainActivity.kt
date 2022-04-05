@@ -27,17 +27,10 @@ class MainActivity : AppCompatActivity() {
         when (appState) {
             is AppState.Success -> {
                 val data = appState.data
-                if (data == null || data.isEmpty()) {
+                if (data.isNullOrEmpty()) {
                     showErrorScreen(getString(R.string.empty_server_response))
                 } else {
-                    if (adapter == null) {
-                        binding.recycler.layoutManager =
-                            LinearLayoutManager(applicationContext)
-                        binding.recycler.adapter =
-                            MainAdapter(data)
-                    } else {
-                        adapter!!.setData(data)
-                    }
+                    adapter.setData(data)
                 }
             }
             is AppState.Loading -> {
@@ -69,7 +62,7 @@ class MainActivity : AppCompatActivity() {
     private fun showErrorScreen(error: String?) {
         binding.errorText.text = error ?: getString(R.string.undefined_error)
         binding.reloadBtn.setOnClickListener {
-            model.getData("test").observe(this, observer)
+            model.getData("test")
         }
     }
 }
