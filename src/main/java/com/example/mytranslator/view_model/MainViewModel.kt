@@ -13,14 +13,14 @@ class MainViewModel(
 
     private val liveDataForViewToObserve: MutableLiveData<AppState> = MutableLiveData()
 
-    protected val viewModelCoroutineScope = CoroutineScope(
-        Dispatchers.Main
+    private val viewModelCoroutineScope = CoroutineScope(
+        Dispatchers.IO
                 + SupervisorJob()
                 + CoroutineExceptionHandler { _, throwable ->
             handleError(throwable)
         })
 
-    fun handleError(error: Throwable) {
+    private fun handleError(error: Throwable) {
         liveDataForViewToObserve.postValue(AppState.Error(error))
     }
 
@@ -36,7 +36,7 @@ class MainViewModel(
         liveDataForViewToObserve.postValue(parseSearchResults(provider.getData(word)))
     }
 
-    protected fun cancelJob() {
+    private fun cancelJob() {
         viewModelCoroutineScope.coroutineContext.cancelChildren()
     }
 
