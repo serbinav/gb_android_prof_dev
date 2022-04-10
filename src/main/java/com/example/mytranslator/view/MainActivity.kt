@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mytranslator.R
 import com.example.mytranslator.databinding.ActivityMainBinding
+import com.example.mytranslator.retrofit.ApiData
 import com.example.mytranslator.view_model.AppState
 import com.example.mytranslator.view_model.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -13,7 +14,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var model: MainViewModel
-    private val adapter: MainAdapter by lazy { MainAdapter() }
+    private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
+
+    private val onListItemClickListener: MainAdapter.OnListItemClickListener =
+        object : MainAdapter.OnListItemClickListener {
+            override fun onItemClick(data: ApiData) {
+                val searchDialogFragment =
+                    DescriptionFragment.newInstance("www", "всемирная паутина", "http")
+                searchDialogFragment.show(supportFragmentManager, DESCRIPTION_FRAGMENT_DIALOG_TAG)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
         val viewModel: MainViewModel by viewModel()
         model = viewModel
-        model.subscribe().observe(this@MainActivity, { renderData(it) })
+        model.subscribe().observe(this@MainActivity) { renderData(it) }
     }
 
     private fun initViews() {
@@ -64,5 +74,10 @@ class MainActivity : AppCompatActivity() {
         binding.reloadBtn.setOnClickListener {
             model.getData("test")
         }
+    }
+
+    companion object {
+        private const val DESCRIPTION_FRAGMENT_DIALOG_TAG =
+            "ad19a4e1-7838-42c0-b0f7-742ec6973640"
     }
 }

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mytranslator.databinding.ActivityMainRecyclerviewItemBinding
 import com.example.mytranslator.retrofit.ApiData
 
-class MainAdapter:
+class MainAdapter(private var onListItemClickListener: OnListItemClickListener) :
     RecyclerView.Adapter<MainAdapter.MainViewHolder>() {
 
     private var data: List<ApiData> = arrayListOf()
@@ -45,8 +45,17 @@ class MainAdapter:
                 if (layoutPosition != RecyclerView.NO_POSITION) {
                     wordOriginal.text = data.text.orEmpty()
                     wordTranslate.text = data.meanings?.get(0)?.translation?.translation.orEmpty()
+                    itemView.setOnClickListener { openInNewWindow(data) }
                 }
             }
         }
+    }
+
+    private fun openInNewWindow(listItemData: ApiData) {
+        onListItemClickListener.onItemClick(listItemData)
+    }
+
+    interface OnListItemClickListener {
+        fun onItemClick(data: ApiData)
     }
 }
