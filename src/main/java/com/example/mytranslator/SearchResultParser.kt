@@ -20,7 +20,7 @@ fun parseSearchResults(data: AppState): AppState {
     return AppState.Success(newSearchResults)
 }
 
-private fun parseResult(dataModel: ApiData, newDataModels: ArrayList<ApiData>) {
+fun parseResult(dataModel: ApiData, newDataModels: ArrayList<ApiData>) {
     if (!dataModel.text.isNullOrBlank() && !dataModel.meanings.isNullOrEmpty()) {
         val newMeanings = arrayListOf<Meanings>()
         for (meaning in dataModel.meanings) {
@@ -32,4 +32,16 @@ private fun parseResult(dataModel: ApiData, newDataModels: ArrayList<ApiData>) {
             newDataModels.add(ApiData(dataModel.text, newMeanings))
         }
     }
+}
+
+fun convertMeaningsToString(meanings: List<Meanings>): String {
+    var meaningsSeparatedByComma = String()
+    for ((index, meaning) in meanings.withIndex()) {
+        meaningsSeparatedByComma += if (index + 1 != meanings.size) {
+            String.format("%s%s", meaning.translation?.translation, ", ")
+        } else {
+            meaning.translation?.translation
+        }
+    }
+    return meaningsSeparatedByComma
 }

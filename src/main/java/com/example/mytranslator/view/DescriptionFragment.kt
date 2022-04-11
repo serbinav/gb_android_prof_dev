@@ -2,11 +2,8 @@ package com.example.mytranslator.view
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
-import androidx.fragment.app.DialogFragment
 import coil.ImageLoader
 import coil.request.LoadRequest
 import coil.transform.CircleCropTransformation
@@ -18,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.mytranslator.R
 import com.example.mytranslator.databinding.FragmentDescriptionBinding
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -25,7 +23,7 @@ private const val WORD_EXTRA = "b1990e8e-045d-4420-b54a-4d87c144703c"
 private const val DESCRIPTION_EXTRA = "c6f5d263-1888-4c86-8141-c04115948a42"
 private const val URL_EXTRA = "d6b0ab4d-d3e1-47b0-bd7a-86a6135a9935"
 
-class DescriptionFragment : DialogFragment() {
+class DescriptionFragment : BottomSheetDialogFragment() {
     private var header: String? = null
     private var descr: String? = null
     private var url: String? = null
@@ -55,9 +53,7 @@ class DescriptionFragment : DialogFragment() {
         binding.descrHeader.text = header
         binding.descrText.text = descr
         val imageLink = url ?: ""
-        if (url.isNullOrBlank()) {
-            stopRefreshAnimationIfNeeded()
-        } else {
+        if (imageLink.isNotEmpty() ) {
             usePicassoToLoadPhoto(binding.descrImg, imageLink)
             //useGlideToLoadPhoto(binding.descriptionImageview, imageLink)
             //useCoilToLoadPhoto(binding.descriptionImageview, imageLink)
@@ -65,22 +61,14 @@ class DescriptionFragment : DialogFragment() {
         binding.close.setOnClickListener { dismiss() }
     }
 
-    private fun stopRefreshAnimationIfNeeded() {
-        if (binding.descriptionScreenSwipeRefreshLayout.isRefreshing) {
-            binding.descriptionScreenSwipeRefreshLayout.isRefreshing = false
-        }
-    }
-
     private fun usePicassoToLoadPhoto(imageView: ImageView, imageLink: String) {
         Picasso.get().load("https:$imageLink")
             .placeholder(R.drawable.no_img_200_200).fit().centerCrop()
             .into(imageView, object : Callback {
                 override fun onSuccess() {
-                    stopRefreshAnimationIfNeeded()
                 }
 
                 override fun onError(e: Exception?) {
-                    stopRefreshAnimationIfNeeded()
                     imageView.setImageResource(R.drawable.ic_baseline_error_32)
                 }
             })
@@ -96,7 +84,6 @@ class DescriptionFragment : DialogFragment() {
                     target: Target<Drawable>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    stopRefreshAnimationIfNeeded()
                     imageView.setImageResource(R.drawable.ic_baseline_error_32)
                     return false
                 }
@@ -108,7 +95,6 @@ class DescriptionFragment : DialogFragment() {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    stopRefreshAnimationIfNeeded()
                     return false
                 }
             })
@@ -142,7 +128,7 @@ class DescriptionFragment : DialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(word: String, description: String, url: String) =
+        fun newInstance(word: String, description: String, url: String?) =
             DescriptionFragment().apply {
                 arguments = Bundle().apply {
                     putString(WORD_EXTRA, word)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mytranslator.R
+import com.example.mytranslator.convertMeaningsToString
 import com.example.mytranslator.databinding.ActivityMainBinding
 import com.example.mytranslator.retrofit.ApiData
 import com.example.mytranslator.view_model.AppState
@@ -20,7 +21,11 @@ class MainActivity : AppCompatActivity() {
         object : MainAdapter.OnListItemClickListener {
             override fun onItemClick(data: ApiData) {
                 val searchDialogFragment =
-                    DescriptionFragment.newInstance("www", "всемирная паутина", "http")
+                DescriptionFragment.newInstance(
+                    data.text!!,
+                    convertMeaningsToString(data.meanings!!),
+                    data.meanings[0].imageUrl
+                )
                 searchDialogFragment.show(supportFragmentManager, DESCRIPTION_FRAGMENT_DIALOG_TAG)
             }
         }
