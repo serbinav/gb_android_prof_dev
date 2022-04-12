@@ -2,6 +2,7 @@ package com.example.mytranslator
 
 import com.example.mytranslator.retrofit.ApiData
 import com.example.mytranslator.retrofit.Meanings
+import com.example.mytranslator.room.HistoryEntity
 import com.example.mytranslator.view_model.AppState
 
 fun parseSearchResults(data: AppState): AppState {
@@ -44,4 +45,28 @@ fun convertMeaningsToString(meanings: List<Meanings>): String {
         }
     }
     return meaningsSeparatedByComma
+}
+
+fun mapHistoryEntityToSearchResult(list: List<HistoryEntity>): List<ApiData> {
+    val searchResult = ArrayList<ApiData>()
+    if (!list.isNullOrEmpty()) {
+        for (entity in list) {
+            searchResult.add(ApiData(entity.word, null))
+        }
+    }
+    return searchResult
+}
+
+fun convertDataModelSuccessToEntity(appState: AppState): HistoryEntity? {
+    return when (appState) {
+        is AppState.Success -> {
+            val searchResult = appState.data
+            if (searchResult.isNullOrEmpty() || searchResult[0].text.isNullOrEmpty()) {
+                null
+            } else {
+                HistoryEntity(searchResult[0].text!!, null)
+            }
+        }
+        else -> null
+    }
 }
