@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mytranslator.model.ModelProvider
-import com.example.mytranslator.parseOnlineSearchResults
+import com.example.mytranslator.utils.parseOnlineSearchResults
 import kotlinx.coroutines.*
 
 class MainViewModel(

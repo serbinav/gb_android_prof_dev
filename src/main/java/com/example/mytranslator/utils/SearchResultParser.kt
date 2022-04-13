@@ -1,4 +1,4 @@
-package com.example.mytranslator
+package com.example.mytranslator.utils
 
 import com.example.mytranslator.retrofit.ApiData
 import com.example.mytranslator.retrofit.Meanings

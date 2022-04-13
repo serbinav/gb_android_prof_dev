@@ -1,9 +1,9 @@
 package com.example.mytranslator.model
 
-import com.example.mytranslator.convertDataModelSuccessToEntity
-import com.example.mytranslator.mapHistoryEntityToSearchResult
 import com.example.mytranslator.retrofit.ApiData
 import com.example.mytranslator.room.HistoryDao
+import com.example.mytranslator.utils.convertDataModelSuccessToEntity
+import com.example.mytranslator.utils.mapHistoryEntityToSearchResult
 import com.example.mytranslator.view_model.AppState
 
 class LocalModel(private val historyDao: HistoryDao) :

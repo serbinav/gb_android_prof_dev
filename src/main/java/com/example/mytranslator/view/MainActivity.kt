@@ -6,9 +6,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mytranslator.R
-import com.example.mytranslator.convertMeaningsToString
 import com.example.mytranslator.databinding.ActivityMainBinding
 import com.example.mytranslator.retrofit.ApiData
+import com.example.mytranslator.utils.convertMeaningsToString
 import com.example.mytranslator.view_model.AppState
 import com.example.mytranslator.view_model.MainViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel

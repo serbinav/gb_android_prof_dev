@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mytranslator.model.HistoryProvider
-import com.example.mytranslator.parseLocalSearchResults
+import com.example.mytranslator.utils.parseLocalSearchResults
 import kotlinx.coroutines.*
 
 class HistoryViewModel(
