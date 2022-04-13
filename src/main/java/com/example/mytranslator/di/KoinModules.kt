@@ -22,7 +22,7 @@ val application = module {
 }
 
 val mainScreen = module {
-    factory { ModelProvider(repositoryRemote = get()) }
+    factory { ModelProvider(repositoryRemote = get(), repositoryLocal = get()) }
     factory { MainViewModel(provider = get()) }
 }
 
