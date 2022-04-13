@@ -11,8 +11,14 @@ import org.koin.dsl.module
 val application = module {
     single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
     single { get<HistoryDataBase>().historyDao() }
-    single<Repository<List<ApiData>>>{ RepositoryImplementation(RemoteModel()) }
-    single<RepositoryLocal<List<ApiData>>>{ RepositoryImplementationLocal(LocalModel(get())) }
+    single<Repository<List<ApiData>>> { RepositoryImplementation(dataSource = RemoteModel()) }
+    single<RepositoryLocal<List<ApiData>>> {
+        RepositoryImplementationLocal(
+            dataSource = LocalModel(
+                historyDao = get()
+            )
+        )
+    }
 }
 
 val mainScreen = module {
