@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 @Entity(indices = arrayOf(Index(value = arrayOf("word"), unique = true)))
 class HistoryEntity(
 
-@PrimaryKey
+    @PrimaryKey
     @ColumnInfo(name = "word")
     var word: String,
 
