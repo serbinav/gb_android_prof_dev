@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mytranslator.model.HistoryProvider
-import com.example.mytranslator.parseSearchResults
+import com.example.mytranslator.parseLocalSearchResults
 import kotlinx.coroutines.*
 
 class HistoryViewModel(
@@ -30,8 +30,8 @@ class HistoryViewModel(
         liveDataForViewToObserve.postValue(AppState.Error(error))
     }
 
-    private suspend fun startProvider(word: String) = withContext(Dispatchers.IO) {
-        liveDataForViewToObserve.postValue(parseSearchResults(provider.getData(word)))
+    private suspend fun startProvider(word: String) {
+        liveDataForViewToObserve.postValue(parseLocalSearchResults(provider.getData(word)))
     }
 
     override fun onCleared() {

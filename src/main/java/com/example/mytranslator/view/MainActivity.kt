@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mytranslator.R
 import com.example.mytranslator.convertMeaningsToString
 import com.example.mytranslator.databinding.ActivityMainBinding
@@ -88,7 +87,6 @@ class MainActivity : AppCompatActivity() {
         binding.searchBtn.setOnClickListener {
             model.getData(binding.searchText.text.toString())
         }
-        binding.recycler.layoutManager = LinearLayoutManager(applicationContext)
         binding.recycler.adapter = adapter
     }
 
